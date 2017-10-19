@@ -1,0 +1,77 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/app-layout/app-drawer/app-drawer.html">
+<link rel="import" href="../../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
+<link rel="import" href="../../bower_components/app-layout/app-header/app-header.html">
+<link rel="import" href="../../bower_components/app-layout/app-header-layout/app-header-layout.html">
+<link rel="import" href="../../bower_components/app-layout/app-toolbar/app-toolbar.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<dom-module id="ipt-home">
+    <template>
+        <!-- <style include="ai-pages-shared-styles"></style> -->
+        <style>
+            :host {
+                display: block;
+                @apply --paper-font-common-base;
+            }
+
+            app-drawer-layout:not([narrow]) [drawer-toggle] {
+                display: none;
+            }
+
+            ai-menu {
+                height: 100%;
+            }
+        </style>
+
+        <app-drawer-layout id="drawerLayout" force-narrow="[[forceNarrow]]">
+            <app-drawer id="drawer" opened="{{drawerOpened}}" slot="drawer">
+                Menu
+            </app-drawer>
+            <app-header-layout>
+                <app-header slot="header" reveals>
+                    <app-toolbar class="primary-header">
+                        <paper-icon-button icon="ai:menu" drawer-toggle></paper-icon-button>
+                        <div main-title>
+                            <slot name="title"></slot>
+                        </div>
+                        <slot name="app-toolbar"></slot>
+                    </app-toolbar>
+                </app-header>
+                <div>
+                    <h2>IPT - HOME</h2>
+                    <slot></slot>
+                </div>
+            </app-header-layout>
+        </app-drawer-layout>
+    </template>
+
+    <script>
+        /**
+         * @polymer
+         */
+        class IptHome extends Polymer.Element {
+
+            static get is() { return "ipt-home" }
+
+            static get properties() {
+                return {
+                    /**
+                     * Forces the menu to be an overlay regardless of browser width.
+                     */
+                    forceNarrow: {
+                        type: Boolean,
+                        value: false
+                    }
+                }
+            }
+
+            closeMenu() {
+                if (!this.$.drawer.persistent) {
+                    this.drawerOpened = false;
+                }
+            }
+        }
+
+        customElements.define(IptHome.is, IptHome);
+    </script>
+</dom-module>
