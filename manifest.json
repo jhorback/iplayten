@@ -1,0 +1,7 @@
+{
+  "name": "ipt",
+  "short_name": "ipt",
+  "description": "iplayten.com",
+  "start_url": "/",
+  "display": "standalone"
+}
