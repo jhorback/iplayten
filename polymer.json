@@ -1,7 +1,19 @@
 {
+  "entrypoint": "index.html",
+  "shell": "src/ipt-app/ipt-app.html",
+  "extraDependencies": [
+    "bower_components/webcomponentsjs/*"
+  ],
   "lint": {
     "rules": [
       "polymer-2"
     ]
-  }
+  },
+  "builds": [{
+    "preset": "es5-bundled",
+    "name": "default",
+    "bundle": {
+        "sourcemaps": true
+    }
+  }]
 }
