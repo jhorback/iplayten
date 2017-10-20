@@ -5,9 +5,10 @@
 <link rel="import" href="../../bower_components/app-layout/app-header-layout/app-header-layout.html">
 <link rel="import" href="../../bower_components/app-layout/app-toolbar/app-toolbar.html">
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
-<dom-module id="ipt-home">
+<link rel="import" href="../ipt-styles/ipt-styles.html">
+<dom-module id="ipt-my-play">
     <template>
-        <!-- <style include="ai-pages-shared-styles"></style> -->
+        <style include="ipt-pages-shared-styles"></style>
         <style>
             :host {
                 display: block;
@@ -18,27 +19,55 @@
                 display: none;
             }
 
+            .menu-content {
+                padding: 1em;
+            }
+
             ai-menu {
                 height: 100%;
+            }
+
+            .home-content {
+                padding: 1em;
             }
         </style>
 
         <app-drawer-layout id="drawerLayout" force-narrow="[[forceNarrow]]">
             <app-drawer id="drawer" opened="{{drawerOpened}}" slot="drawer">
-                Menu
+                <div class="menu-content">
+                        Menu                        
+                </div>
             </app-drawer>
             <app-header-layout>
                 <app-header slot="header" reveals>
                     <app-toolbar class="primary-header">
-                        <paper-icon-button icon="ai:menu" drawer-toggle></paper-icon-button>
+                        <paper-icon-button icon="ipt:menu" drawer-toggle></paper-icon-button>
                         <div main-title>
+                            My Play
                             <slot name="title"></slot>
                         </div>
                         <slot name="app-toolbar"></slot>
                     </app-toolbar>
                 </app-header>
-                <div>
-                    <h2>IPT - HOME</h2>
+                <div class="home-content">
+                    <div>
+                        Notifications list by time (most recent at the top)
+                        <p>
+                        <div>
+                            <b>Today</b><br>
+                            List of todays notifications...
+                        </div>
+                        <br>
+                        <div>
+                            <b>Tomorrow</b><br>
+                            List of tomorrows notifications...
+                        </div>
+                        <br>
+                        <div>
+                            <b>This week</b><br>
+                            List of this weeks notifications...
+                        </div>
+                    </div>
                     <slot></slot>
                 </div>
             </app-header-layout>
@@ -49,9 +78,9 @@
         /**
          * @polymer
          */
-        class IptHome extends Polymer.Element {
+        class IptMyPlay extends Polymer.Element {
 
-            static get is() { return "ipt-home" }
+            static get is() { return "ipt-my-play" }
 
             static get properties() {
                 return {
@@ -70,8 +99,12 @@
                     this.drawerOpened = false;
                 }
             }
+
+            drawerOpened() {
+                alert("drawer opened");
+            }
         }
 
-        customElements.define(IptHome.is, IptHome);
+        customElements.define(IptMyPlay.is, IptMyPlay);
     </script>
 </dom-module>

@@ -1,0 +1,30 @@
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../bower_components/paper-styles/color.html">
+<link rel="import" href="../../bower_components/paper-styles/typography.html">
+<link rel="import" href="../../bower_components/paper-styles/shadow.html">
+
+<!-- paper-styles-classes contains classes for typography and shadow
+<link rel="import" href="../bower_components/paper-styles/paper-styles-classes.html">
+-->
+
+<dom-module id="ipt-pages-shared-styles">
+    <template>
+         <style>
+            .primary-header {
+                @apply --primary-header;
+            }
+        </style>
+    </template>
+</dom-module>
+
+<!-- Mixins -->
+<custom-style>
+    <style>
+        html body {
+            --primary-header: {
+                background-color: var(--primary-header-color);
+                color: var(--dark-theme-text-color);
+            };
+        }
+    </style>
+</custom-style>
