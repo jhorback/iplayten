@@ -1,0 +1,12 @@
+{
+  "name": "ipt",
+  "version": "0.1.0",
+  "scripts": {
+      "polyserve": "polymer serve -o",
+      "polytest": "polymer test",
+      "polydoc": "polymer analyze > analysis.json",
+      "polybuild": "polymer build",
+      "deploy": "npm run polybuild & firebase deploy"
+  },
+  "devDependencies": {}
+}

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8" />
+
+    <script src="../bower_components/webcomponentsjs/webcomponents-loader.js"></script>
+    <link rel="import" href="../bower_components/app-layout/app-header/app-header.html">
+    <link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
+    <link rel="import" href="../bower_components/paper-card/paper-card.html">
+    <link rel="import" href="../bower_components/paper-item/paper-item.html">
+    <link rel="import" href="../bower_components/marked-element/marked-element.html">
+
+    <title>Creating elements - ai-app</title>
+
+    <style>
+        html, body {
+            margin: 0;
+            font-family: 'Roboto', 'Noto', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            background: var(--paper-grey-800);
+        }
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 25px;
+        }
+
+        h2 {
+            margin: 0;
+            padding: 10px 0;
+            font-size: 1.0rem;
+            color: var(--paper-grey-300);            
+        }
+
+        paper-card {
+            display: block;
+            margin-bottom: 25px;
+        }
+        paper-card ul {
+            display: block;
+        }
+
+        paper-card li {
+            display: block;
+            color: inherit;
+        }
+
+        paper-card > li {
+            border-top: 1px solid var(--paper-grey-300);            
+        }
+
+        paper-card > li:first-child {
+            border-top: none;
+        }
+
+        app-header {
+             color: var(--paper-grey-300);
+        }
+        code {
+            background: var(--paper-grey-300);
+        }
+        pre code {
+            display: block;
+            padding: 1em;
+        }
+        .extra {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 25px;
+        }
+        .extra a, .extra a:active, .extra a:visited {
+            color: var(--paper-grey-300);
+        }
+        .extra a:hover {
+            color: orange;
+        }
+        marked-element {
+            padding: 0 1em 1em 1em;
+        }
+        marked-element h1 {
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+
+<body>
+    <app-header reveals style="height: 64px;">
+        <app-toolbar style="height:64px;">
+            <img src="../ai-app-elements/images/favicon.png" style="margin-right:1em;">
+            <div main-title>Creating elements</div>
+        </app-toolbar>
+    </app-header>
+
+    <main>
+        <section>
+            <h2>Command line</h2>            
+            <paper-card>
+                    <marked-element>
+                        <div slot="markdown-html"></div>
+                        <script type="text/markdown">
+                        # NPM tasks                        
+                        * **npm run polyserve** - Opens the root index page by running `polymer serve -o`.
+                        * **npm run polytest** - Runs all tests using `polymer test`.
+                        * **npm run polydoc** - Generates the `analysis.json` (used by the documentation).
+                        * **npm run polybuild** - Generates the build files by running `polymer build` which is configured by `polymer.json`.
+                        * **npm run deploy** - Runs polybuild and the firebase deploy.
+                    
+                        # Polymer tasks
+                        Notable Polymer cli commands that can be run directly.
+                        * **polymer serve -o** - Run this to serve the static app locally using the polymer server.
+                        * **polymer test** - Runs all polymer tests: `tests/index.html`.
+                        * **polymer build** - Builds the poylmer app. Uses the `polymer.json` build configuration.
+                        * **polymer analyze > analysis.json** - Outputs the `analysis.json` for element documentation.
+                        </script>
+                    </marked-element>
+                </div>
+            </paper-card>
+        </section>
+        <section>
+            <h2>Creating an element catalog</h2>
+            <paper-card>
+                <marked-element>
+                    <div slot="markdown-html"></div>
+                        <script type="text/markdown">
+                        # Structure (foo-el-elements)
+
+                        ```
+                        /foo-el-elements (the root catalog folder)
+                            /demo
+                                index.html (optional root demo page for the catalog)
+                            /test
+                                index.html (the test harness for all elements in the catalog)
+                            README.md (optional readme)
+                       ```
+
+                       # Enable testing
+                       Add a link to the `test/index.html` in the parent folders `test/index.html`.
+
+                       # Add to ai-app/index
+                       You can optionally add links to run all tests and demos in the `ai-app/index`.
+                        </script>
+                </marked-element>
+            </paper-card>
+        </section>
+        <section>
+            <h2>Creating an element</h2>
+            <paper-card>
+                <marked-element>
+                    <div slot="markdown-html"></div>
+                        <script type="text/markdown">
+                        # Structure (foo-el-elements > foo-element)
+
+                        ```
+                        /foo-el-elements/ (catalog)
+                            /tests
+                                /foo-el.html (add a test)
+                            /demo
+                                /foo-el.html (add a demo)
+                            /foo-el (houses the element and any needed resources)
+                                /foo-el.html
+                                /README.md (optional readme)
+				
+                        ```
+
+                       # Enable testing
+                       Add an entry to the `test/index.html` to run the `tests/foo-el.html`.
+
+                       # Document
+                       [Document your element](https://www.polymer-project.org/2.0/docs/tools/documentation#document-an-element) in code.
+                       Add a demo page and a reference in code documentation (`@demo`).
+
+
+                       # Add to ai-app/index
+                       You can optionally add links to run tests and documentation from the `ai-app/index`.
+                        </script>
+                </marked-element>
+            </paper-card>
+        </section>
+        
+    </main>
+
+    <div class="extra">
+        
+        
+    </div>
+</body>
+
+</html>
