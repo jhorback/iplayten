@@ -19,10 +19,6 @@
                 display: none;
             }
 
-            .menu-content {
-                padding: 1em;
-            }
-
             ai-menu {
                 height: 100%;
             }
@@ -30,18 +26,36 @@
             .home-content {
                 padding: 1em;
             }
+
+            .menu-icon {
+                color: var(--accent-color);
+            }
+
+            /* .drawer-toggle {
+                position: relative;
+                left: -1.0em;
+            } */
+
+            .main-title {
+                padding-left: 1em;
+            }
         </style>
 
         <app-drawer-layout id="drawerLayout" force-narrow="[[forceNarrow]]">
             <app-drawer id="drawer" opened="{{drawerOpened}}" slot="drawer">
-                <div class="menu-content">
-                        Menu                        
+                <div>
+                    <app-toolbar class="primary-header">
+                        <div>
+                            <paper-icon-button icon="ipt:person" class="menu-icon"></paper-icon-button>                        
+                            iPlayTen
+                        </div>
+                    </app-toolbar>
                 </div>
             </app-drawer>
             <app-header-layout>
                 <app-header slot="header" reveals>
                     <app-toolbar class="primary-header">
-                        <paper-icon-button icon="ipt:menu" drawer-toggle></paper-icon-button>
+                        <paper-icon-button icon="ipt:menu" drawer-toggle class="drawer-toggle"></paper-icon-button>
                         <div main-title>
                             My Play
                             <slot name="title"></slot>
