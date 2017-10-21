@@ -1,0 +1,48 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="ipt-firebase-scripts.html">
+
+<dom-module id="ipt-firebase-config">
+  <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class IptFirebaseConfig extends Polymer.Element {
+      static get is() { return 'ipt-firebase-config'; }
+
+      static get config() {
+        return {
+          staging: {
+            apiKey: "AIzaSyAf43yy8Cy9XoCIcACH4tAida2XN_KV0R4",
+            authDomain: "iplayten-staging.firebaseapp.com",
+            databaseURL: "https://iplayten-staging.firebaseio.com",
+            messagingSenderId: "499271966015",
+            projectId: "iplayten-staging",
+            storageBucket: "iplayten-staging.appspot.com"
+          }
+        };
+      }
+      
+      connectedCallback() {
+        if (IptFirebaseConfig.initialized) {
+          return;
+        }
+
+        IptFirebaseConfig.initialized = true;        
+        
+        if (window.location.href.indexOf("/components/") > -1) {
+          console.info("Firebase init from static -> staging");
+          firebase.initializeApp(IptFirebaseConfig.config.staging);
+        } else {
+          fetch('/__/firebase/init.json').then(response => {
+            const config = response.json();
+            console.info("Firebase init from firebase", config);
+            firebase.initializeApp(config);
+          });
+        }
+      }
+    }
+
+    window.customElements.define(IptFirebaseConfig.is, IptFirebaseConfig);
+  </script>
+</dom-module>

@@ -3,7 +3,7 @@
   "description": "iplayten.com",
   "main": "index.html",
   "dependencies": {
-    "polymer": "Polymer/polymer#^2.0.2",    
+    "polymer": "Polymer/polymer#^2.0.2",
     "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.3",
     "app-route": "PolymerElements/app-route#^2.0.0",
     "app-layout": "PolymerElements/app-layout#^2.0.1",
@@ -14,7 +14,8 @@
     "paper-item": "PolymerElements/paper-item#^2.0.0",
     "paper-dialog": "PolymerElements/paper-dialog#^2.0.0",
     "paper-dropdown-menu": "PolymerElements/paper-dropdown-menu#^2.0.0",
-    "paper-listbox": "PolymerElements/paper-listbox#^2.0.0"
+    "paper-listbox": "PolymerElements/paper-listbox#^2.0.0",
+    "firebase": "^4.6.0"
   },
   "devDependencies": {
     "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^2.0.0",
