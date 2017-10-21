@@ -27,17 +27,17 @@
     </test-fixture>
 
     <script>
-      suite('ipt-app', function() {
+      describe('ipt-app', _ => {
 
-        test('instantiating the element with default properties works', function() {
+        it('instantiates the element with default properties', function() {
           var element = fixture('BasicTestFixture');
-          assert.equal(element.prop1, 'ipt-app');
+          expect(element.prop1).to.equal('ipt-app');
         });
 
-        test('setting a property on the element works', function() {
+        it('can set a property on the element', function() {
           // Create a test fixture
           var element = fixture('ChangedPropertyTestFixture');
-          assert.equal(element.prop1, 'new-prop1');
+          expect(element.prop1).to.equal('new-prop1');
         });
 
       });

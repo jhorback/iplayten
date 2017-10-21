@@ -1,33 +1,32 @@
 # &lt;ipt&gt;
 
-iplayten.com
+ * This application uses Node, Polymer, and Firebase. 
+ * Install these before running tasks.
 
-## Install the Polymer-CLI
+## Environments
+> Production - [iplayten.com](https://iplayten.com)
 
-First, make sure you have the [Polymer CLI](https://www.npmjs.com/package/polymer-cli) installed. Then run `polymer serve` to serve your application locally.
+> Staging - [iplayten-staging.firebase.com](https://iplayten-staging.firebaseapp.com)
 
-## Viewing Your Application
 
-```
-$ polymer serve
-```
 
-## Building Your Application
+ # Npm tasks
+                       
+* **npm run polyserve** - Opens the root index page by running `polymer serve -o`.
+* **npm run polytest** - Runs all tests using `polymer test`.
+* **npm run polydoc** - Generates the `analysis.json` (used by the documentation).
+* **npm run polybuild** - Generates the build files by running `polymer build` which is configured by `polymer.json`.
+* **npm run stage-push** - Pushes the current state to the staging url. (builds, but skips the tests).
+* **npm run stage** - Runs tests, polybuild, and firebase deploy in the staging environment. (https://iplayten-staging.firebaseapp.com)
+* **npm run deploy** - Runs tests, polybuild, and firebase deploy on default (PUSHES TO PRODUCTION). (https://iplayten.com)
 
-```
-$ polymer build
-```
+# Polymer tasks
+Notable Polymer cli commands that can be run directly.
+* **polymer serve -o** - Run this to serve the static app locally using the polymer server.
+* **polymer test** - Runs all polymer tests: `tests/index.html`.
+* **polymer build** - Builds the poylmer app. Uses the `polymer.json` build configuration.
+* **polymer analyze > analysis.json** - Outputs the `analysis.json` for element documentation.
 
-This will create builds of your application in the `build/` directory, optimized to be served in production. You can then serve the built versions by giving `polymer serve` a folder to serve from:
-
-```
-$ polymer serve build/default
-```
-
-## Running Tests
-
-```
-$ polymer test
-```
-
-Your application is already set up to be tested via [web-component-tester](https://github.com/Polymer/web-component-tester). Run `polymer test` to run your application's test suite locally.
+# Firebase tasks
+* **firebase use {default}** - Sets the environment for Firebase to use. Currently, it can be "default" or "staging".
+* **firebase deploy** - Deploys the current codebase to the environment currently in "use".

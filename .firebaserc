@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "iplayten-245d3"
+    "default": "iplayten-245d3",
+    "staging": "iplayten-staging"
   }
 }

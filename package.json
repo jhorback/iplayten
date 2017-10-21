@@ -6,7 +6,9 @@
       "polytest": "polymer test",
       "polydoc": "polymer analyze > analysis.json",
       "polybuild": "polymer build",
-      "deploy": "npm run polybuild & firebase deploy"
+      "stage-push": "npm run polybuild && firebase deploy -P staging",
+      "stage": "npm run polytest && npm run polybuild && firebase deploy -P staging",
+      "deploy": "npm run polytest && npm run polybuild && firebase deploy -P default"
   },
   "devDependencies": {}
 }
