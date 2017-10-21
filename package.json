@@ -2,13 +2,14 @@
   "name": "ipt",
   "version": "0.1.0",
   "scripts": {
+      "polybuild": "polymer build",
       "polyserve": "polymer serve -o",
+      "fireserve": "npm run polybuild && firebase serve",      
       "polytest": "polymer test",
       "polydoc": "polymer analyze > analysis.json",
-      "polybuild": "polymer build",
-      "stage-push": "npm run polybuild && firebase deploy -P staging",
-      "stage": "npm run polytest && npm run polybuild && firebase deploy -P staging",
-      "deploy": "npm run polytest && npm run polybuild && firebase deploy -P default"
+      "push-staging": "npm run polybuild && firebase deploy -P staging",
+      "deploy-staging": "npm run polytest && npm run polybuild && firebase deploy -P staging",
+      "deploy-production": "npm run polytest && npm run polybuild && firebase deploy -P default"
   },
   "devDependencies": {}
 }
