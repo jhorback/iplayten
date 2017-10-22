@@ -4,7 +4,7 @@
   "scripts": {
       "polybuild": "polymer build",
       "polyserve": "polymer serve -o",
-      "fireserve": "npm run polybuild && firebase serve",      
+      "fireserve": "npm run polybuild && firebase use staging && firebase serve",      
       "polytest": "polymer test",
       "polydoc": "polymer analyze > analysis.json",
       "push-staging": "npm run polybuild && firebase deploy -P staging",

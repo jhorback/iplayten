@@ -17,7 +17,7 @@
 
 ## Serve
 * **polyserve** - Opens the root index page by running `polymer serve -o`. Uses the static staging configuration.
-* **fireserve** - Runs a local firebase server and uses the current alias configuration.
+* **fireserve** - Runs polybuild, sets the firebase alias to staging, then runs a local firebase server.
 
 ## Test
 * **polytest** - Runs all tests using `polymer test`.
