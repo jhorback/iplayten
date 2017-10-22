@@ -1,0 +1,224 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    <title>EventMap tests</title>
+
+    <script src="../../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../../bower_components/web-component-tester/browser.js"></script>
+    <script src="../../../bower_components/test-fixture/test-fixture-mocha.js"></script>
+
+    <link rel="import" href="../../../bower_components/test-fixture/test-fixture.html">
+    <link rel="import" href="../../../bower_components/polymer/polymer.html">
+    <link rel="import" href="../EventMap.html">
+
+</head>
+
+<body>
+    <test-fixture id="test1">
+        <template>
+            <event-map-test-1>
+                <child-element id="child"></child-element>
+            </event-map-test-1>
+        </template>
+    </test-fixture>
+
+    <test-fixture id="noEventsTest">
+        <template>
+            <event-map-with-no-events></event-map-with-no-events>
+        </template>
+    </test-fixture>
+
+    <script>
+        'use strict';
+
+        /**
+         * A class used to test the EventMap mixin.
+         */
+        class EventMapTest1 extends EventMap(Polymer.Element) {
+            static get is() { return "event-map-test-1"; }
+            
+            static get events() {
+                return {
+                    "event-to-trigger": "_toTrigger",
+                    "event-to-test-parent": {
+                        listenAt: "parent",
+                        handler: "_toTestParent"
+                    },
+                    "event-to-test-window": {
+                        listenAt: "window",
+                        handler: "_toTestWindow"
+                    }
+                };
+            }
+
+            _toTrigger() {
+                window.firedEvents._toTrigger = "triggered";
+            }
+
+            _toTestParent() {
+                window.firedEvents._toTrigger = "triggeredOnParent";                
+            }
+
+            _toTestWindow() {
+                window.firedEvents._toTrigger = "triggeredOnWindow";                
+            }
+        }
+        customElements.define(EventMapTest1.is, EventMapTest1);
+        
+
+        /**
+         * A class that has no events defined.
+         */
+        class EventsMapWithNoEvents extends EventMap(Polymer.Element) {
+            static get is() { return "event-map-with-no-events"; }
+        }
+        customElements.define(EventsMapWithNoEvents.is, EventsMapWithNoEvents);
+
+        /**
+         * A class with a bad handler
+         */
+         class EventsMapWithBadEventHandler extends EventMap(Polymer.Element) {
+            static get is() { return "event-map-with-bad-event-handler"; }
+            static get events() {
+                return {
+                    "non-existing-handler": "_doesNotExist"
+                }
+            }
+        }
+        customElements.define(EventsMapWithBadEventHandler.is, EventsMapWithBadEventHandler);
+
+        /**
+         * A child element used to trigger events.
+         */
+        class ChildElement extends Polymer.Element {
+            static get is() { return "child-element"; }
+        }
+        customElements.define(ChildElement.is, ChildElement);
+
+
+        describe("EventMap", function () {
+
+            beforeEach(function () {
+                window.firedEvents = {};
+            });
+
+            describe("Setup", function () {
+
+                it("is a Polymer.Element", function () {
+                    let frag = fixture("test1");
+                    expect(frag instanceof Polymer.Element).to.be.true;
+                });
+            
+                it("supports not defining a static events property", function () {
+                    let frag = fixture("noEventsTest");
+                    /*
+                     * make sure there is no error with an element that
+                     * does not define the static events property.
+                     */
+                    expect(frag instanceof Polymer.Element).to.be.true;
+                });
+
+                it("throws an error if a handler is not defined", function () {
+                    var badFn = function () { 
+                        /*
+                         * attaching to the dom calls the connectedCallback async 
+                         * so just call the method directly
+                         */
+                        let el = document.createElement("event-map-with-bad-event-handler");
+                        el.connectedCallback();
+                    };
+                    expect(badFn).to.throw(Error, "EventMap method does not exist: _doesNotExist");
+                });
+            });
+
+            describe("Events", function () {
+                var frag, child, event;
+                
+                beforeEach(function () {
+                    frag = fixture("test1");
+                    child = frag.querySelector("#child");
+                    event = new CustomEvent('event-to-trigger', {bubbles: true, composed: true});                    
+                });                
+
+                it("handles an event", function () {    
+                    child.dispatchEvent(event);
+                    expect(window.firedEvents._toTrigger).to.be.equal("triggered");                    
+                });
+
+                it("detaches the event", function () {
+                    frag.remove();
+                    child.dispatchEvent(event);
+                    expect(window.firedEvents._toTrigger).to.be.equal();                    
+                });
+
+                it("stops event propagation", function () {
+                    let listener = (event) => {
+                       throw new Error("IT BUBBLED");
+                    };
+
+                    window.addEventListener("event-to-trigger", listener);
+                    expect(() => child.dispatchEvent(event)).to.not.throw();
+                    window.removeEventListener("event-to-trigger", listener);
+                });            
+            });
+
+
+            describe("Events at parent", function () {
+                var frag, event;
+                
+                beforeEach(function () {
+                    frag = fixture("test1");
+                    event = new CustomEvent('event-to-test-parent', {bubbles: true, composed: true});                    
+                });                
+
+                it("handles an event", function () {    
+                    frag.dispatchEvent(event);
+                    expect(window.firedEvents._toTrigger).to.be.equal("triggeredOnParent");                    
+                });
+
+                it("detaches the event", function () {
+                    frag.remove();
+                    frag.dispatchEvent(event);
+                    expect(window.firedEvents._toTrigger).to.be.equal();                    
+                });
+
+                it("stops event propagation", function () {
+                    let listener = (event) => {
+                       throw new Error("IT BUBBLED");
+                    };
+
+                    window.addEventListener("event-to-test-parent", listener);
+                    expect(() => child.dispatchEvent(event)).to.not.throw();
+                    window.removeEventListener("event-to-test-parent", listener);
+                });
+            });
+
+
+            describe("Events at window", function () {
+                var frag, event;
+                
+                beforeEach(function () {
+                    frag = fixture("test1");
+                    event = new CustomEvent('event-to-test-window', {bubbles: true, composed: true});                    
+                });                
+
+                it("handles an event", function () {    
+                    frag.dispatchEvent(event);
+                    expect(window.firedEvents._toTrigger).to.be.equal("triggeredOnWindow");                    
+                });
+
+                it("detaches the event", function () {
+                    frag.remove();
+                    frag.dispatchEvent(event);
+                    expect(window.firedEvents._toTrigger).to.be.equal();                    
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
