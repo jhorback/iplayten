@@ -1,0 +1,86 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="ipt-firebase-scripts.html">
+<link rel="import" href="EventMap.html">
+
+<script>
+/**
+ * @customElement
+ * @polymer
+ */
+class IptUserData extends Polymer.Element {
+
+    static get is() { return 'ipt-user-data'; }
+
+    static get properties() {
+        return {
+            /**
+             * 
+             */
+            currentUser: {
+                type: Object,
+                value: null,
+                readOnly: true,
+                notify: true,
+                observer: "_currentUserChanged"
+            },            
+            isSignedIn: {
+                type: Boolean,
+                value: false,
+                notify: true
+            },
+            hasAuth: {
+                type: Boolean,
+                value: false,
+                notify: true
+            },
+            isFirebaseConfigured: {
+                type: Boolean,
+                value: false,
+                observer: "_isFirebaseConfiguredChanged"
+            }
+        }
+    }
+
+    static get events() {
+        return null;
+    }
+
+    constructor() {
+        super();
+        if (this.isFirebaseConfigured) {
+            this.__setupAuth();
+        }
+    }
+    
+    __setupAuth() {
+        try {
+            this.auth = firebase.auth();
+            this.set("hasAuth", true);
+            console.log("firebase.auth successful; setting initial user.");
+            this._setCurrentUser(this.auth.currentUser);
+            this.auth.onAuthStateChanged(user => {
+                this._setCurrentUser(user);
+                console.log("User updated from firebase", user);
+            });
+        } catch (error) {
+            if (error.code === "app/no-app") {
+                console.log("firebase.auth NOT successful");
+                this.set("hasAuth", false);
+            } else throw error;
+        }
+    }
+
+    _currentUserChanged() {
+        const signedIn = !!this.currentUser;
+        this.isSignedIn = signedIn;
+    }
+
+    _isFirebaseConfiguredChanged(isConfigured) {
+        if (isConfigured === true) {
+            this.__setupAuth();
+        }
+    }
+}
+
+customElements.define(IptUserData.is, IptUserData);
+</script>
