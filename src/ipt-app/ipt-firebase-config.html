@@ -1,7 +1,6 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="ipt-firebase-scripts.html">
 
-<dom-module id="ipt-firebase-config">
   <script>
     /**
      * @customElement
@@ -9,6 +8,17 @@
      */
     class IptFirebaseConfig extends Polymer.Element {
       static get is() { return 'ipt-firebase-config'; }
+
+      static get properties() {
+        return {
+          isConfigured: {
+            type: Boolean,
+            value: false,
+            notify: true,
+            readOnly: true
+          }
+        };
+      }
 
       static get config() {
         return {
@@ -23,26 +33,41 @@
         };
       }
       
-      connectedCallback() {
-        if (IptFirebaseConfig.initialized) {
-          return;
-        }
+      constructor() {
+        super();
 
-        IptFirebaseConfig.initialized = true;        
+        // guard agains initializing twice; seful for tests
+        if (IptFirebaseConfig.initialized) {
+          this.__dispatchConfiguredEvent();
+          return;
+        } else IptFirebaseConfig.initialized = true;        
         
+
+        // if serving locally using polymer serve use the static staging
+        // configuration values
         if (window.location.href.indexOf("/components/") > -1) {
-          console.info("Firebase init from static -> staging");
+          console.info("Firebase init from static -> staging");          
           firebase.initializeApp(IptFirebaseConfig.config.staging);
+          this.__dispatchConfiguredEvent();
         } else {
+          firebase.initializeApp(IptFirebaseConfig.config.staging);          
           fetch('/__/firebase/init.json').then(response => {
             const config = response.json();
             console.info("Firebase init from firebase", config);
             firebase.initializeApp(config);
+            this.__dispatchConfiguredEvent();
           });
         }
+      }
+
+      __dispatchConfiguredEvent() {
+        this._setIsConfigured(true);        
+        this.dispatchEvent(new CustomEvent("firebase-configured", {
+          bubbles: true,
+          composed: true
+        }));
       }
     }
 
     window.customElements.define(IptFirebaseConfig.is, IptFirebaseConfig);
   </script>
-</dom-module>

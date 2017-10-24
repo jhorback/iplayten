@@ -2,7 +2,7 @@
 <link rel="import" href="ipt-firebase-scripts.html">
 <link rel="import" href="ipt-firebase-config.html">
 <link rel="import" href="ipt-my-play.html">
-
+<link rel="import" href="ipt-user-data.html">
 
 <dom-module id="ipt-app">
   <template>
@@ -10,9 +10,21 @@
       :host {
         display: block;
       }
+      [hidden] { display: none; }
     </style>
-    <ipt-firebase-config></ipt-firebase-config>
-    <ipt-my-play></ipt-my-play>
+    <ipt-firebase-config is-configured="{{isFirebaseConfigured}}"></ipt-firebase-config>
+
+    <ipt-user-data id="userData"
+      is-firebase-configured="[[isFirebaseConfigured]]"
+      current-user="{{currentUser}}"
+      is-signed-in="{{isSignedIn}}">
+    </ipt-user-data>
+    
+      <button hidden$="[[isSignedIn]]" on-click="_signInWithGoogleTapped">Sign In with Google</button>
+  
+      <ipt-my-play hidden$="[[!isSignedIn]]"></ipt-my-play>
+
+   
   </template>
 
   <script>
@@ -24,11 +36,36 @@
       static get is() { return 'ipt-app'; }
       static get properties() {
         return {
+          isSignedIn: {
+            type: Boolean,
+            observer: "_isSignedInChanged",
+            notify: true,
+            reflectToAttribute: true,
+            value: false
+          },
+
+          currentUser: {
+            type: Object
+          },
+
           prop1: {
             type: String,
-            value: 'ipt-app'
+            value: 'ipt-app',
+            reflectToAttribute: true
           }
         };
+      }
+
+      _isSignedInChanged() {
+        // debugger;
+      }
+
+      _signInWithGoogleTapped() {
+        var provider = new firebase.auth.GoogleAuthProvider();
+        provider.addScope("email");
+        firebase.auth().signInWithPopup(provider).then(result => {
+          // debugger;
+        });
       }
     }
 

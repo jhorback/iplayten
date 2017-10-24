@@ -1,6 +1,9 @@
 {
   "entrypoint": "index.html",
   "shell": "src/ipt-app/ipt-app.html",
+  "sources": [
+    "src/**/*"
+   ],
   "extraDependencies": [
     "bower_components/webcomponentsjs/*"
   ],
